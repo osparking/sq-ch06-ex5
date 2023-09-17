@@ -18,7 +18,9 @@ public class Main {
 		comment.setText("한국은행의 핵심기능은 물가안정이다.");
 		comment.setAuthor("은행총재");
 		var service = ctx.getBean("commentService", CommentService.class);
-		service.publishComment(comment);
+		service.editComment(comment);
+		var result = service.publishComment(comment);
+		logger.info("main: " + result);
 		
 	}
 
