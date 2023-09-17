@@ -1,10 +1,8 @@
 package aspect;
 
-import java.util.Arrays;
 import java.util.logging.Logger;
 
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 
 import space.jbpark.utility.MyUtil;
@@ -13,20 +11,9 @@ import space.jbpark.utility.MyUtil;
 public class LoggingAspect {
 	private Logger logger = MyUtil.getLogger(LoggingAspect.class.getName());
 	
-	private String getMethodSpec(ProceedingJoinPoint joinPoint) {
-		var sb = new StringBuilder("차단된 메소드 명세 - ");
-		sb.append(System.lineSeparator());
-		sb.append("\t메소드명: ");
-		sb.append(joinPoint.getSignature().getName());
-		sb.append(System.lineSeparator());
-		sb.append("\t인자목록: ");
-		sb.append(Arrays.asList(joinPoint.getArgs()));
-		return sb.toString();
-	}
-	
-	@Around("@annotation(ToLog)")
-	public void log(ProceedingJoinPoint joinPoint) throws Throwable {
-		logger.info(getMethodSpec(joinPoint));
-		joinPoint.proceed();
+	@AfterReturning(value = "@annotation(ToLog)",
+			returning = "returnValue")
+	public void log(Object returnValue) throws Throwable {
+		logger.info("반환된 값: " + returnValue);
 	}
 }
