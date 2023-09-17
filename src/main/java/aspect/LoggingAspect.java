@@ -24,7 +24,7 @@ public class LoggingAspect {
 		return sb.toString();
 	}
 	
-	@Around("execution (* services.*.*(..))")
+	@Around("@annotation(ToLog)")
 	public void log(ProceedingJoinPoint joinPoint) throws Throwable {
 		logger.info(getMethodSpec(joinPoint));
 		joinPoint.proceed();
